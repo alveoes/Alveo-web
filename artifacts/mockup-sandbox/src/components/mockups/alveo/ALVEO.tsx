@@ -73,10 +73,10 @@ export function ALVEO() {
   useReveal();
 
   useEffect(() => {
-    document.title = "ALVEO — Haz que tu negocio sea visible.";
+     document.title = "ALVEO Granada — Haz que tu negocio sea visible.";
     const meta = document.querySelector('meta[name="description"]') ?? document.createElement("meta");
     meta.setAttribute("name", "description");
-    meta.setAttribute("content", "Impulsamos la presencia digital de negocios locales mediante contenido, redes sociales y estrategias de marketing local.");
+     meta.setAttribute("content", "ALVEO ayuda a negocios locales de Granada a mejorar su presencia digital, atraer visitas y conseguir más clientes.");
     if (!meta.parentNode) document.head.appendChild(meta);
   }, []);
 
@@ -125,9 +125,9 @@ export function ALVEO() {
 
       <section id="inicio" className="alveo-shell alveo-hero" data-reveal>
         <div className="alveo-hero-copy">
-           <div className="alveo-kicker">ALVEO / Agencia de marketing local</div>
+           <div className="alveo-kicker">ALVEO / Agencia de marketing local en Granada</div>
           <h1 className="alveo-display">Haz que tu negocio <em>sea visible.</em></h1>
-          <p>Impulsamos la presencia digital de negocios locales mediante contenido, redes sociales y estrategias de marketing local.</p>
+          <p>Impulsamos la presencia digital de negocios locales en Granada mediante contenido, redes sociales y estrategias de marketing local.</p>
           <div className="alveo-hero-actions"><a className="alveo-btn alveo-btn-dark" href="#contacto">Quiero mejorar mi negocio <ArrowUpRight size={15} /></a><a className="alveo-btn" href="#servicios">Ver servicios</a></div>
           <div className="alveo-scroll"><CircleArrowDown size={15} /> Baja para conocer ALVEO</div>
         </div>
@@ -149,11 +149,11 @@ export function ALVEO() {
 
       <section id="portfolio" className="alveo-shell alveo-section alveo-portfolio" data-reveal><div className="alveo-section-head"><div><div className="alveo-kicker">Trabajo en curso</div><h2>Portfolio<br /><em>próximamente.</em></h2></div><a className="alveo-btn" href="#contacto">Ver portfolio completo <ArrowUpRight size={14} /></a></div><div className="alveo-portfolio-grid">{[1,2,3].map((n) => <div className="alveo-project" key={n}><span className="alveo-project-no">0{n} / ALVEO</span><span>Próximo proyecto <b className="alveo-project-plus">+</b></span></div>)}</div></section>
 
-      <section id="sobre-alveo" className="alveo-about" data-reveal><div className="alveo-shell alveo-about-grid"><div><div className="alveo-kicker">Sobre ALVEO</div><h2>No queremos que publiques más. Queremos que publiques mejor.</h2><p>ALVEO nace con una idea sencilla: ayudar a los negocios locales a aprovechar de verdad Internet para conseguir visibilidad, confianza y clientes.</p></div><div className="alveo-about-list">{["Contenido","Estrategia","Visibilidad","Clientes"].map((item, i) => <div className="alveo-about-item" key={item}><span>0{i+1}</span>{item}<ChevronRight size={20} /></div>)}</div></div></section>
+      <section id="sobre-alveo" className="alveo-about" data-reveal><div className="alveo-shell alveo-about-grid"><div><div className="alveo-kicker">Sobre ALVEO</div><h2>No queremos que publiques más. Queremos que publiques mejor.</h2><p>ALVEO nace en Granada con una idea sencilla: ayudar a los negocios locales a aprovechar de verdad Internet para conseguir visibilidad, confianza y clientes.</p></div><div className="alveo-about-list">{["Contenido","Estrategia","Visibilidad","Clientes"].map((item, i) => <div className="alveo-about-item" key={item}><span>0{i+1}</span>{item}<ChevronRight size={20} /></div>)}</div></div></section>
 
        <section id="contacto" className="alveo-shell alveo-contact" data-reveal><div className="alveo-contact-grid"><div className="alveo-contact-copy"><div className="alveo-kicker">Hablemos</div><h2>¿Preparado para hacer que tu negocio sea más visible?</h2><p>Cuéntanos qué haces y analizaremos cómo podemos ayudarte.</p><div className="alveo-contact-links"><a href="#contacto" aria-label="Instagram — enlace pendiente"><Instagram size={13} /> Instagram</a><a href="#contacto" aria-label="WhatsApp — enlace pendiente"><MessageCircle size={13} /> WhatsApp</a><a href="#contacto" aria-label="Email — enlace pendiente"><ArrowUpRight size={13} /> Email</a></div></div><form className="alveo-form" onSubmit={handleSubmit}>{sent && <div className="alveo-success"><Check size={17} /> Mensaje preparado. Este formulario queda listo para conectar con un servicio de email.</div>} {[["Nombre","Tu nombre","text"],["Negocio","Nombre de tu negocio","text"],["Email","tu@email.com","email"],["Teléfono","Tu teléfono","tel"]].map(([label,placeholder,type]) => <div className="alveo-field" key={label}><label htmlFor={label}>{label}</label><input id={label} name={label} placeholder={placeholder} type={type} required={label !== "Teléfono"} /></div>)}<div className="alveo-field alveo-field-full"><label htmlFor="Mensaje">Mensaje</label><textarea id="Mensaje" name="Mensaje" placeholder="Cuéntanos un poco sobre tu negocio..." required /></div><button className="alveo-btn alveo-btn-dark" type="submit">Enviar mensaje <ArrowUpRight size={14} /></button></form></div></section>
 
-       <footer className="alveo-footer"><div className="alveo-shell"><div className="alveo-footer-top"><a className="alveo-logo" href="#inicio">ALVEO <Mark inverse /></a><nav aria-label="Navegación de pie">{footerLinks.map(([label,href]) => <a key={href} href={href}>{label}</a>)}</nav></div><div className="alveo-footer-bottom"><span>Marketing digital para negocios locales.</span><span>© 2026 ALVEO. Todos los derechos reservados.</span></div></div></footer>
+       <footer className="alveo-footer"><div className="alveo-shell"><div className="alveo-footer-top"><a className="alveo-logo" href="#inicio">ALVEO <Mark inverse /></a><nav aria-label="Navegación de pie">{footerLinks.map(([label,href]) => <a key={href} href={href}>{label}</a>)}</nav></div><div className="alveo-footer-bottom"><span>Marketing digital para negocios locales en Granada.</span><span>© 2026 ALVEO. Todos los derechos reservados.</span></div></div></footer>
     </main>
   );
 }
