@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { config } from "./config.js";
+import { config, PLATAFORMAS_PUBLICAS } from "./config.js";
 import { MUNICIPIOS } from "./municipios.js";
 import { SECTORES, sectorPorId } from "./sectors.js";
-import { validarGoogle, validarInstagram, validarTiktok } from "./url-validation.js";
+import { validarGoogle, validarInstagram } from "./url-validation.js";
 import { RUBRICA_VERSION, puntuar } from "./rubric.js";
 import { Cache, DailyBudget, registrarAnalisis } from "./infra.js";
 import * as google from "./platforms/google.js";
@@ -30,7 +30,9 @@ export function validarEntrada(body) {
   if (!municipio) errores.municipio = "Elige un municipio de la provincia de Granada.";
 
   const enlaces = {};
-  const validadores = { instagram: validarInstagram, tiktok: validarTiktok, google: validarGoogle };
+  const todos = { instagram: validarInstagram, google: validarGoogle };
+  // Solo se aceptan plataformas públicas; cualquier otro enlace se ignora.
+  const validadores = Object.fromEntries(PLATAFORMAS_PUBLICAS.map((p) => [p, todos[p]]));
   const e = b.enlaces && typeof b.enlaces === "object" ? b.enlaces : {};
   for (const [p, validar] of Object.entries(validadores)) {
     const v = e[p];
@@ -38,8 +40,8 @@ export function validarEntrada(body) {
     const r = validar(v);
     if (r.ok) enlaces[p] = r; else errores[p] = r.error;
   }
-  if (!Object.values(enlaces).some(Boolean) && !["instagram", "tiktok", "google"].some((p) => errores[p])) {
-    errores.general = "Añade al menos un enlace válido de Instagram, TikTok o Google.";
+  if (!Object.values(enlaces).some(Boolean) && !PLATAFORMAS_PUBLICAS.some((p) => errores[p])) {
+    errores.general = "Añade al menos un enlace válido de Google o Instagram.";
   }
   if (Object.keys(errores).length) return { ok: false, errores };
   return { ok: true, datos: { negocio, sector, sectorOtro, municipio, enlaces } };
@@ -123,7 +125,7 @@ export async function analizar(datos, emitir) {
   const id = randomUUID();
   const ahora = Date.now();
   const tareas = [];
-  const plataformas = ["google", "instagram", "tiktok"];
+  const plataformas = PLATAFORMAS_PUBLICAS;
   emitir({ tipo: "inicio", id, plataformas: plataformas.map((p) => ({ plataforma: p, incluida: !!datos.enlaces[p] })) });
 
   for (const p of plataformas) {
@@ -132,7 +134,6 @@ export async function analizar(datos, emitir) {
     const tarea = (async () => {
       let r;
       if (!enlace) r = { plataforma: p, estado: "sin_perfil" };
-      else if (p === "tiktok") r = noAnalizado("tiktok", "Análisis de TikTok pendiente: TikTok no ofrece por ahora un acceso oficial a perfiles de terceros que podamos usar.");
       else {
         paso("Iniciando análisis");
         r = p === "google" ? await analizarGoogle(enlace, datos, paso, ahora) : await analizarInstagram(enlace, datos, paso, ahora);
@@ -163,4 +164,4 @@ export async function analizar(datos, emitir) {
   return analisis;
 }
 
-export const OPCIONES = { sectores: SECTORES.map(({ id, nombre }) => ({ id, nombre })), municipios: MUNICIPIOS };
+export const OPCIONES = { plataformas: PLATAFORMAS_PUBLICAS, sectores: SECTORES.map(({ id, nombre }) => ({ id, nombre })), municipios: MUNICIPIOS };

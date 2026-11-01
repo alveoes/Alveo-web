@@ -54,10 +54,12 @@ export const config = {
   whatsappNumber: "34642018865",
 };
 
+// Plataformas visibles para el público. TikTok queda oculto hasta tener una fuente de datos permitida.
+export const PLATAFORMAS_PUBLICAS = ["google", "instagram"];
+
 export function integrationStatus() {
   return {
     google: config.google.apiKey ? "activa" : "sin_configurar",
     instagram: config.instagram.igUserId && config.instagram.accessToken ? "activa" : "sin_configurar",
-    tiktok: "pendiente",
   };
 }

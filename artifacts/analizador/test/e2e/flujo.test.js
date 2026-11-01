@@ -59,8 +59,11 @@ test("formulario: exige al menos un enlace y valida dominios", async () => {
   await p.selectOption("#sector", "otro");
   assert.equal(await p.isVisible("#sectorOtro"), true);
   // «No tengo este perfil» desactiva el campo
-  await p.check("[data-sin-perfil='tiktok']");
-  assert.equal(await p.isDisabled("#enlace-tiktok"), true);
+  await p.check("[data-sin-perfil='instagram']");
+  assert.equal(await p.isDisabled("#enlace-instagram"), true);
+  // TikTok no aparece en la página pública
+  assert.equal(await p.$("[data-plataforma='tiktok']"), null);
+  assert.ok(!(await p.textContent("body")).includes("TikTok"));
   // instrucciones desplegables
   await p.click("[data-plataforma='google'] summary");
   assert.equal(await p.isVisible("[data-plataforma='google'] details ol"), true);
@@ -72,17 +75,14 @@ test("flujo completo: progreso, resultados, datos ausentes y WhatsApp", async ()
   await datosBasicos(p);
   await p.fill("#enlace-google", "https://www.google.com/maps/place/Taberna+Ficticia/@37.17,-3.59,17z/data=!4m6!3m5!1s0xd71fc:0x" + (1234567890).toString(16));
   await p.fill("#enlace-instagram", "@taberna_ficticia");
-  await p.fill("#enlace-tiktok", "https://www.tiktok.com/@taberna_ficticia");
   await p.click("#boton-analizar");
   await p.waitForSelector("#resultados:not([hidden])", { timeout: 15000 });
 
   const tarjetas = await p.$$eval("#tarjetas article", (as) => as.map((a) => a.innerText));
-  assert.equal(tarjetas.length, 3);
+  assert.equal(tarjetas.length, 2);
   assert.match(tarjetas[0], /Google[\s\S]*Puntuación sobre 100[\s\S]*Cobertura parcial · 6 de 7[\s\S]*Respuestas del propietario\s*Datos insuficientes/);
   assert.match(tarjetas[0], /Taberna Ficticia de Prueba · C\. Inventada, 12/);
   assert.match(tarjetas[1], /Instagram[\s\S]*Puntuación sobre 100[\s\S]*Cobertura completa/);
-  assert.match(tarjetas[2], /TikTok\s*No se ha podido analizar/);
-  assert.ok(!/TikTok[\s\S]*Puntuación sobre 100/.test(tarjetas[2]), "TikTok no recibe puntuación");
   assert.match(await p.textContent("#meta-analisis"), /Fecha del análisis: \d+ de noviembre de 2026/);
   assert.match(await p.textContent(".aclaracion"), /No representan un porcentaje de ventas ni garantizan resultados comerciales/);
   const meter = await p.getAttribute("#tarjetas article:first-child .puntuacion + .medidor", "aria-valuenow");

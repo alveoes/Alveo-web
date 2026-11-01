@@ -11,7 +11,7 @@ test("los pesos ponderados de cada plataforma suman 100", () => {
   for (const [k, p] of Object.entries(RUBRICA)) {
     assert.equal(p.apartados.reduce((s, a) => s + a.peso, 0), 100, k);
   }
-  assert.equal(rubricaPublica().plataformas.tiktok.pendiente, true);
+  assert.equal(rubricaPublica().plataformas.tiktok, undefined, "TikTok no se publica mientras esté pendiente");
 });
 
 test("Google: cálculo completo coincide con el cálculo manual", () => {

@@ -5,7 +5,7 @@ import { validarEntrada } from "../src/analyze.js";
 const base = { negocio: "Bar Paco", sector: "restauracion", municipio: "Granada", enlaces: {} };
 
 test("exige al menos un enlace válido", () => {
-  const r = validarEntrada({ ...base, enlaces: { instagram: null, tiktok: "", google: null } });
+  const r = validarEntrada({ ...base, enlaces: { instagram: null, google: null } });
   assert.equal(r.ok, false);
   assert.match(r.errores.general, /al menos un enlace/);
 });
@@ -27,7 +27,7 @@ test("valida sector, «Otro», municipio y nombre", () => {
 });
 
 test("limpia el texto y acepta entradas correctas", () => {
-  const r = validarEntrada({ ...base, negocio: "  Bar <b>Paco</b>\n ", enlaces: { google: "https://maps.app.goo.gl/AbCdEf123", tiktok: "@barpaco" } });
+  const r = validarEntrada({ ...base, negocio: "  Bar <b>Paco</b>\n ", enlaces: { google: "https://maps.app.goo.gl/AbCdEf123" } });
   assert.equal(r.ok, true);
   assert.equal(r.datos.negocio, "Bar bPaco/b");
   assert.equal(r.datos.enlaces.instagram, null);
@@ -37,4 +37,13 @@ test("limpia el texto y acepta entradas correctas", () => {
 test("rechaza cuerpos que no son objetos", () => {
   assert.equal(validarEntrada(null).ok, false);
   assert.equal(validarEntrada("hola").ok, false);
+});
+
+test("TikTok está oculto: su enlace se ignora y no basta como único enlace", () => {
+  const r = validarEntrada({ ...base, enlaces: { tiktok: "https://www.tiktok.com/@barpaco" } });
+  assert.equal(r.ok, false);
+  assert.match(r.errores.general, /al menos un enlace/);
+  const r2 = validarEntrada({ ...base, enlaces: { tiktok: "@barpaco", instagram: "@barpaco" } });
+  assert.equal(r2.ok, true);
+  assert.equal(r2.datos.enlaces.tiktok, undefined);
 });

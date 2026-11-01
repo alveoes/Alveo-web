@@ -1,0 +1,20 @@
+<!-- Campo de TikTok retirado de la página pública mientras no exista una integración permitida.
+     Para reactivarlo: añadir "tiktok" a PLATAFORMAS_PUBLICAS (src/config.js), implementar src/platforms/tiktok.js
+     y volver a insertar este bloque en public/index.html, dentro de <div class="plataformas">. -->
+            <fieldset class="plataforma" data-plataforma="tiktok">
+              <legend>TikTok</legend>
+              <p class="estado-integracion" data-estado-para="tiktok" hidden></p>
+              <label class="visualmente-oculto" for="enlace-tiktok">Enlace de TikTok</label>
+              <input id="enlace-tiktok" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.tiktok.com/@…" aria-describedby="ej-tiktok err-tiktok">
+              <p class="ejemplo" id="ej-tiktok">Ejemplo: <code>https://www.tiktok.com/@tunegocio</code></p>
+              <p class="error" id="err-tiktok" hidden></p>
+              <details>
+                <summary>¿Cómo encuentro mi enlace?</summary>
+                <ol>
+                  <li>Abre TikTok y pulsa <strong>Perfil</strong>.</li>
+                  <li>Pulsa el icono de compartir y elige <strong>Copiar enlace</strong>.</li>
+                  <li>Pégalo aquí. También puedes escribir tu usuario con arroba, por ejemplo <code>@tunegocio</code>.</li>
+                </ol>
+              </details>
+              <label class="casilla"><input type="checkbox" data-sin-perfil="tiktok"> No tengo este perfil</label>
+            </fieldset>

@@ -13,7 +13,7 @@ Herramienta gratuita para negocios de Granada (capital y provincia). El visitant
 |---|---|---|---|
 | **Google (Perfil de Empresa)** | **Funcional; falta la clave** | Places API (New): Text Search + Place Details | Clave de API con facturación activa en Google Cloud |
 | **Instagram** | **Parcial; faltan las credenciales** | Instagram Graph API, *Business Discovery* | App de Meta y cuenta profesional de ALVEO vinculada. Solo puede consultar cuentas **profesionales** |
-| **TikTok** | **Pendiente** | — | No existe una vía oficial para leer perfiles de terceros sin que inicien sesión (ver abajo) |
+| **TikTok** | **Pendiente (oculto al público)** | — | No existe una vía oficial para leer perfiles de terceros sin que inicien sesión (ver abajo) |
 
 Sin credenciales, la plataforma aparece como «No se ha podido analizar» con su motivo. Nunca se muestran datos de demostración.
 

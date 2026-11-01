@@ -225,6 +225,7 @@ export function puntuar(plataforma, evidencias, ctx) {
 export function rubricaPublica() {
   const out = { version: RUBRICA_VERSION, coberturaMinimaPlataforma: MIN_COBERTURA_PLATAFORMA, coberturaMinimaApartado: MIN_COBERTURA_APARTADO, plataformas: {} };
   for (const [k, p] of Object.entries(RUBRICA)) {
+    if (p.pendiente) continue; // las plataformas pendientes no se publican
     out.plataformas[k] = {
       nombre: p.nombre, pendiente: !!p.pendiente,
       apartados: p.apartados.map((a) => ({ id: a.id, nombre: a.nombre, peso: a.peso, criterios: a.criterios.map((c) => ({ id: c.id, nombre: c.nombre, peso: c.peso })) })),

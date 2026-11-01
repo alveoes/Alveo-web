@@ -1,17 +1,16 @@
 import { enlaceWhatsApp } from "./whatsapp.js";
 
-const PLATAFORMAS = ["google", "instagram", "tiktok"];
-const NOMBRES = { google: "Google", instagram: "Instagram", tiktok: "TikTok" };
+// Se ajusta con /api/opciones: solo las plataformas públicas.
+let PLATAFORMAS = ["google", "instagram"];
+const NOMBRES = { google: "Google", instagram: "Instagram" };
 // Comprobación rápida en el navegador; la validación definitiva la hace el servidor.
 const PATRONES = {
   google: /^(https?:\/\/)?((www\.)?google\.(com|es)\/maps|maps\.google\.(com|es)\/|maps\.app\.goo\.gl\/|goo\.gl\/maps\/|g\.page\/|share\.google\/|g\.co\/kgs\/)/i,
   instagram: /^(@[A-Za-z0-9._]{1,30}$|(https?:\/\/)?((www|m)\.)?instagram\.com\/[A-Za-z0-9._]{1,30}\/?(\?.*)?$)/i,
-  tiktok: /^(@[A-Za-z0-9._]{2,24}$|(https?:\/\/)?((www|m)\.)?tiktok\.com\/@[A-Za-z0-9._]{2,24}|(https?:\/\/)?(vm|vt)\.tiktok\.com\/[A-Za-z0-9]+)/i,
 };
 const MENSAJES_FORMATO = {
   google: "El enlace debe ser de Google Maps (por ejemplo, https://maps.app.goo.gl/…).",
   instagram: "El enlace debe ser de tu perfil de Instagram (por ejemplo, https://www.instagram.com/tunegocio/).",
-  tiktok: "El enlace debe ser de tu perfil de TikTok (por ejemplo, https://www.tiktok.com/@tunegocio).",
 };
 
 const $ = (sel) => document.querySelector(sel);
@@ -34,6 +33,8 @@ async function cargarOpciones() {
     const r = await fetch("api/opciones", { headers: { Accept: "application/json" } });
     if (!r.ok) throw new Error();
     const o = await r.json();
+    PLATAFORMAS = PLATAFORMAS.filter((p) => o.plataformas.includes(p));
+    for (const fs of document.querySelectorAll("[data-plataforma]")) if (!PLATAFORMAS.includes(fs.dataset.plataforma)) fs.remove();
     const sector = $("#sector");
     for (const s of o.sectores) sector.append(el("option", { value: s.id, text: s.nombre }));
     const muni = $("#municipio");
@@ -42,12 +43,11 @@ async function cargarOpciones() {
     $("#version-rubrica").textContent = o.rubrica;
     const avisos = {
       sin_configurar: "Análisis no disponible temporalmente: puedes añadir el enlace, pero ahora mismo no podremos puntuarlo.",
-      pendiente: "Análisis en preparación: de momento no podemos puntuar este perfil. Si añades el enlace, aparecerá como «No se ha podido analizar».",
     };
     for (const p of PLATAFORMAS) {
       const aviso = avisos[o.integraciones[p]];
       const nodo = document.querySelector(`[data-estado-para="${p}"]`);
-      if (aviso) { nodo.textContent = aviso; nodo.hidden = false; }
+      if (aviso && nodo) { nodo.textContent = aviso; nodo.hidden = false; }
     }
   } catch {
     mostrarErrorGeneral("No se ha podido cargar el formulario. Recarga la página.");
@@ -108,7 +108,7 @@ function validarEnCliente(d) {
   if (d.sector === "otro" && d.sectorOtro.length < 2) err.sectorOtro = "Indica a qué se dedica el negocio.";
   if (!d.municipio) err.municipio = "Elige un municipio de la provincia de Granada.";
   for (const p of PLATAFORMAS) if (d.enlaces[p] && !PATRONES[p].test(d.enlaces[p])) err[p] = MENSAJES_FORMATO[p];
-  if (!PLATAFORMAS.some((p) => d.enlaces[p])) err.general = "Añade al menos un enlace válido de Instagram, TikTok o Google.";
+  if (!PLATAFORMAS.some((p) => d.enlaces[p])) err.general = "Añade al menos un enlace válido de Google o Instagram.";
   return err;
 }
 
