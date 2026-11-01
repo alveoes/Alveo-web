@@ -4,6 +4,7 @@
 #
 #   bash configurar-google.sh [ID_DEL_PROYECTO]
 #
+# Sin argumento usa el proyecto seleccionado en Cloud Shell.
 # Hace, en este orden:
 #   1. Comprueba que el proyecto tiene facturación vinculada.
 #   2. Activa Places API (New), API Keys API, Billing Budgets API y Cloud Quotas API.
@@ -23,10 +24,12 @@ av()  { printf '\n\033[1;33m⚠ %s\033[0m\n' "$*"; }
 err() { printf '\n\033[1;31m✘ %s\033[0m\n' "$*"; exit 1; }
 
 PROYECTO="${1:-}"
+# Sin argumento: el proyecto seleccionado en Cloud Shell; si no hay, uno llamado ALVEO o alveo-analizador.
+[ -z "$PROYECTO" ] && PROYECTO="${DEVSHELL_PROJECT_ID:-$(gcloud config get-value project 2>/dev/null)}"
 if [ -z "$PROYECTO" ]; then
-  PROYECTO="$(gcloud projects list --filter='name:alveo-analizador' --format='value(projectId)' | head -1)"
+  PROYECTO="$(gcloud projects list --filter='name:ALVEO OR name:alveo-analizador' --format='value(projectId)' | head -1)"
 fi
-[ -n "$PROYECTO" ] || err "No encuentro el proyecto «alveo-analizador». Pásame su ID: bash configurar-google.sh ID_DEL_PROYECTO"
+[ -n "$PROYECTO" ] || err "No encuentro el proyecto. Ejecuta: bash configurar-google.sh ID_DEL_PROYECTO"
 gcloud config set project "$PROYECTO" >/dev/null 2>&1
 ok "Proyecto: $PROYECTO"
 
