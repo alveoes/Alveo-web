@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analiza tu negocio gratis — ALVEO Granada</title>
+  <meta name="description" content="Herramienta gratuita de ALVEO para negocios de Granada: introduce los enlaces de tus perfiles y obtén puntuaciones sobre tu presencia en Google e Instagram.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="img/alveo-logo.png" type="image/png">
+  <link rel="preload" href="fonts/manrope-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="cabecera">
+    <div class="contenedor cabecera-fila">
+      <a class="marca" href="./" aria-label="ALVEO, analizador de presencia digital">
+        <img src="img/alveo-logo.png" alt="" width="54" height="33">
+        <span>ALVEO</span>
+      </a>
+      <span class="cabecera-etiqueta">Analizador gratuito</span>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- 1. PRESENTACIÓN -->
+    <section class="contenedor portada" aria-labelledby="titulo-portada">
+      <p class="kicker">ALVEO / Analizador de presencia digital</p>
+      <h1 id="titulo-portada">¿Cómo de visible es tu negocio en <span class="atenuado">internet?</span></h1>
+      <p class="entradilla">Introduce los enlaces de tus perfiles y obtén una puntuación sobre 100 de tu presencia en Google, Instagram y TikTok. Para negocios de Granada capital y provincia.</p>
+      <ul class="ventajas" aria-label="Condiciones">
+        <li>Gratis</li>
+        <li>Sin registro</li>
+        <li>Sin contraseñas</li>
+        <li>Sin pedirte teléfono ni correo</li>
+      </ul>
+      <a class="boton boton-oscuro" href="#formulario">Empezar <span aria-hidden="true">↓</span></a>
+      <p class="nota-portada">Solo consultamos información pública a través de servicios oficiales. Si no podemos comprobar algo, te lo indicamos en lugar de suponerlo.</p>
+    </section>
+
+    <!-- 2. FORMULARIO -->
+    <section class="banda" id="formulario" aria-labelledby="titulo-form">
+      <div class="contenedor">
+        <p class="kicker">Paso 1 de 2</p>
+        <h2 id="titulo-form">Datos de tu negocio</h2>
+        <form id="form-analisis" novalidate>
+          <div class="error-general" id="error-general" role="alert" hidden></div>
+
+          <div class="rejilla-2">
+            <div class="campo">
+              <label for="negocio">Nombre del negocio</label>
+              <input id="negocio" name="negocio" type="text" maxlength="80" autocomplete="organization" required aria-describedby="err-negocio">
+              <p class="error" id="err-negocio" hidden></p>
+            </div>
+            <div class="campo">
+              <label for="municipio">Municipio</label>
+              <select id="municipio" name="municipio" required aria-describedby="err-municipio">
+                <option value="">Elige el municipio</option>
+              </select>
+              <p class="error" id="err-municipio" hidden></p>
+            </div>
+            <div class="campo">
+              <label for="sector">Sector</label>
+              <select id="sector" name="sector" required aria-describedby="err-sector">
+                <option value="">Elige el sector</option>
+              </select>
+              <p class="error" id="err-sector" hidden></p>
+            </div>
+            <div class="campo" id="campo-sector-otro" hidden>
+              <label for="sectorOtro">¿A qué se dedica tu negocio?</label>
+              <input id="sectorOtro" name="sectorOtro" type="text" maxlength="60" placeholder="Por ejemplo: tienda de bicicletas" aria-describedby="err-sectorOtro">
+              <p class="error" id="err-sectorOtro" hidden></p>
+            </div>
+          </div>
+
+          <h3 class="subtitulo">Enlaces de tus perfiles</h3>
+          <p class="ayuda">Añade al menos uno. Si no tienes alguno, marca «No tengo este perfil»: no te restará puntos.</p>
+
+          <div class="plataformas">
+            <fieldset class="plataforma" data-plataforma="google">
+              <legend>Google Maps / Perfil de Empresa</legend>
+              <p class="estado-integracion" data-estado-para="google" hidden></p>
+              <label class="visualmente-oculto" for="enlace-google">Enlace de Google Maps</label>
+              <input id="enlace-google" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://maps.app.goo.gl/…" aria-describedby="ej-google err-google">
+              <p class="ejemplo" id="ej-google">Ejemplo: <code>https://maps.app.goo.gl/AbCdEf123</code></p>
+              <p class="error" id="err-google" hidden></p>
+              <details>
+                <summary>¿Cómo encuentro mi enlace?</summary>
+                <ol>
+                  <li>Busca tu negocio en la aplicación o en la web de Google Maps.</li>
+                  <li>Abre tu ficha y pulsa <strong>Compartir</strong>.</li>
+                  <li>Pulsa <strong>Copiar enlace</strong> y pégalo aquí.</li>
+                </ol>
+                <p>También vale el enlace largo que aparece en el navegador al abrir tu ficha (empieza por <code>https://www.google.com/maps/place/</code>).</p>
+              </details>
+              <label class="casilla"><input type="checkbox" data-sin-perfil="google"> No tengo este perfil</label>
+            </fieldset>
+
+            <fieldset class="plataforma" data-plataforma="instagram">
+              <legend>Instagram</legend>
+              <p class="estado-integracion" data-estado-para="instagram" hidden></p>
+              <label class="visualmente-oculto" for="enlace-instagram">Enlace de Instagram</label>
+              <input id="enlace-instagram" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.instagram.com/…" aria-describedby="ej-instagram err-instagram">
+              <p class="ejemplo" id="ej-instagram">Ejemplo: <code>https://www.instagram.com/tunegocio/</code></p>
+              <p class="error" id="err-instagram" hidden></p>
+              <details>
+                <summary>¿Cómo encuentro mi enlace?</summary>
+                <ol>
+                  <li>Abre Instagram y entra en tu perfil.</li>
+                  <li>Pulsa <strong>Compartir perfil</strong> y después <strong>Copiar enlace</strong>.</li>
+                  <li>Pégalo aquí. También puedes escribir tu usuario con arroba, por ejemplo <code>@tunegocio</code>.</li>
+                </ol>
+                <p>Instagram solo permite consultar cuentas <strong>profesionales</strong> (de empresa o de creador). Las cuentas personales no se pueden analizar.</p>
+              </details>
+              <label class="casilla"><input type="checkbox" data-sin-perfil="instagram"> No tengo este perfil</label>
+            </fieldset>
+
+            <fieldset class="plataforma" data-plataforma="tiktok">
+              <legend>TikTok</legend>
+              <p class="estado-integracion" data-estado-para="tiktok" hidden></p>
+              <label class="visualmente-oculto" for="enlace-tiktok">Enlace de TikTok</label>
+              <input id="enlace-tiktok" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://www.tiktok.com/@…" aria-describedby="ej-tiktok err-tiktok">
+              <p class="ejemplo" id="ej-tiktok">Ejemplo: <code>https://www.tiktok.com/@tunegocio</code></p>
+              <p class="error" id="err-tiktok" hidden></p>
+              <details>
+                <summary>¿Cómo encuentro mi enlace?</summary>
+                <ol>
+                  <li>Abre TikTok y pulsa <strong>Perfil</strong>.</li>
+                  <li>Pulsa el icono de compartir y elige <strong>Copiar enlace</strong>.</li>
+                  <li>Pégalo aquí. También puedes escribir tu usuario con arroba, por ejemplo <code>@tunegocio</code>.</li>
+                </ol>
+              </details>
+              <label class="casilla"><input type="checkbox" data-sin-perfil="tiktok"> No tengo este perfil</label>
+            </fieldset>
+          </div>
+
+          <button class="boton boton-oscuro boton-ancho" type="submit" id="boton-analizar">Analizar mi negocio</button>
+          <p class="privacidad">No pedimos datos de contacto. Guardamos internamente los enlaces analizados y la información pública consultada, solo para poder justificar las puntuaciones.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 3. PROGRESO -->
+    <section class="contenedor seccion" id="progreso" aria-labelledby="titulo-progreso" hidden>
+      <p class="kicker">Paso 2 de 2</p>
+      <h2 id="titulo-progreso" tabindex="-1">Analizando tu negocio</h2>
+      <div class="barra-progreso" role="progressbar" aria-labelledby="titulo-progreso" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra-progreso"><span></span></div>
+      <ul class="lista-progreso" id="lista-progreso" aria-live="polite"></ul>
+    </section>
+
+    <!-- 4. RESULTADOS -->
+    <section class="contenedor seccion" id="resultados" aria-labelledby="titulo-resultados" hidden>
+      <p class="kicker">Resultados</p>
+      <h2 id="titulo-resultados" tabindex="-1"></h2>
+      <p class="meta-analisis" id="meta-analisis"></p>
+      <div class="tarjetas" id="tarjetas"></div>
+      <p class="aclaracion">Las puntuaciones valoran los criterios que hemos podido comprobar con la información pública disponible. No representan un porcentaje de ventas ni garantizan resultados comerciales.</p>
+      <div class="contacto">
+        <h3>¿Quieres mejorar tus puntuaciones?</h3>
+        <p>Escríbenos por WhatsApp. Se abrirá un mensaje ya preparado que podrás revisar antes de enviarlo.</p>
+        <a class="boton boton-lima" id="boton-whatsapp" href="https://wa.me/34642018865" target="_blank" rel="noopener noreferrer">Contactar con ALVEO <span aria-hidden="true">↗</span></a>
+        <button class="boton boton-borde" type="button" id="boton-nuevo">Hacer otro análisis</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>ALVEO · Marketing digital para negocios locales de Granada</p>
+      <p>Datos obtenidos de Google Places API e Instagram Graph API cuando están disponibles. Versión de la rúbrica: <span id="version-rubrica">—</span>.</p>
+    </div>
+  </footer>
+</body>
+</html>

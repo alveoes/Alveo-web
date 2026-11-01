@@ -1,0 +1,24 @@
+kind = "web"
+previewPath = "/analiza-tu-negocio/"
+title = "Analizador de presencia digital"
+version = "1.0.0"
+id = "alveo-analizador-presencia"
+
+[[services]]
+localPort = 8090
+name = "Analizador"
+paths = ["/analiza-tu-negocio"]
+
+[services.development]
+run = "pnpm --filter @workspace/analizador run dev"
+
+[services.production.run]
+args = ["node", "artifacts/analizador/src/server.js"]
+
+[services.production.run.env]
+PORT = "8090"
+NODE_ENV = "production"
+TRUST_PROXY = "1"
+
+[services.production.health.startup]
+path = "/analiza-tu-negocio/api/salud"
