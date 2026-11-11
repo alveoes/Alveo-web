@@ -1,0 +1,57 @@
+ANALIZADOR WEB DE ALVEO — Plugin para WordPress
+================================================
+
+Qué hace
+--------
+El visitante escribe la dirección de su web. El plugin la descarga desde tu
+propio servidor (Hostinger), revisa su código y muestra:
+  - las 3 mejoras más importantes, con lo que se ha visto en su web;
+  - lo que ya hace bien;
+  - un botón para hablar con ALVEO por WhatsApp, con un mensaje ya escrito.
+
+No inventa puntuaciones: cada mejora sale de un problema detectado en el código
+real de la página. Si hay menos de 3 problemas, muestra solo los que hay.
+No necesita cuentas ni claves externas. No pide contraseñas a nadie.
+
+Instalación (sin tocar tu web actual)
+-------------------------------------
+1. Copia de seguridad: en Hostinger, hPanel → Sitios web → (tu web) →
+   Copias de seguridad → «Crear nueva copia de seguridad». Espera a que termine.
+2. WordPress → Plugins → Añadir nuevo → Subir plugin → elige
+   «alveo-analizador.zip» → Instalar ahora → Activar.
+   (Activarlo no cambia nada visible: solo añade el shortcode.)
+3. Páginas → Añadir nueva. Título: «Analiza tu web».
+   Añade un bloque «Shortcode» (en Elementor: widget «Shortcode») con:
+       [alveo_analizador whatsapp="34XXXXXXXXX"]
+   (tu número con prefijo 34, sin espacios ni +).
+4. Pulsa «Guardar borrador» y luego «Vista previa». Así lo pruebas sin que
+   nadie más lo vea. Si algo falla en el servidor, verás un aviso naranja que
+   solo ven los administradores.
+5. Cuando estés conforme: en la página, Enlace permanente → «analiza-tu-web»,
+   y Publicar. Quedará en alveoagencia.es/analiza-tu-web.
+
+Para quitarlo: desactiva y borra el plugin. No deja nada en tu web.
+
+Seguridad
+---------
+- Solo analiza webs públicas (http/https, puertos 80/443). Bloquea direcciones
+  internas, privadas o del propio servidor, también si llegan por redirección o
+  por DNS (protección SSRF).
+- Límite: 5 análisis cada 10 minutos y 25 al día por visitante.
+- Máximo 12 segundos y 3 MB por análisis.
+- Todo lo que viene de webs externas se muestra como texto (sin riesgo de XSS).
+
+Requisitos
+----------
+WordPress 6.0+, PHP 7.4+ con las extensiones cURL y DOM (vienen activadas en
+Hostinger). Funciona con LiteSpeed Cache: la página se puede cachear y el
+análisis no.
+
+Límites de esta versión
+-----------------------
+- Analiza solo la página indicada, no toda la web.
+- Si una web genera su contenido con JavaScript, lo avisa y no opina sobre sus
+  textos ni su contacto.
+- La velocidad se valora con datos reales del servidor (tiempo de respuesta,
+  compresión, peso, imágenes), no con una puntuación de Google.
+- Algunas webs bloquean visitas automáticas; en ese caso se muestra un aviso.

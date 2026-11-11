@@ -1,0 +1,100 @@
+/* Analizador Web de ALVEO — identidad de ALVEO: Manrope + DM Mono,
+   tinta #171717, papel #f7f7f4, lima #d7f45e. Todo va dentro de .alveo-an
+   para no afectar al resto de la web. */
+@font-face{font-family:"Manrope";font-style:normal;font-weight:200 800;font-display:swap;src:url(fonts/manrope-latin-wght-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Mono";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/dm-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"DM Mono";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/dm-mono-latin-500-normal.woff2) format("woff2")}
+
+.alveo-an{--ink:#171717;--paper:#f7f7f4;--line:#d9d9d2;--muted:#6c6c67;--soft:#ecece6;--lime:#d7f45e;--mono:"DM Mono",ui-monospace,monospace;
+  font-family:Manrope,system-ui,sans-serif;color:var(--ink);line-height:1.5;display:grid;gap:12px;margin:0 auto;max-width:1240px;text-align:left;-webkit-font-smoothing:antialiased}
+.alveo-an *,.alveo-an *::before,.alveo-an *::after{box-sizing:border-box}
+.alveo-an p,.alveo-an h2,.alveo-an h3,.alveo-an ul,.alveo-an ol,.alveo-an li{margin:0;padding:0;font-family:inherit;letter-spacing:normal;text-transform:none}
+.alveo-an ul,.alveo-an ol{list-style:none}
+.alveo-an li::marker{content:none}
+.alveo-an a{text-decoration:none;box-shadow:none}
+.alveo-an [hidden]{display:none!important}
+
+.alveo-an-shell{padding:0 clamp(20px,4vw,48px)}
+.alveo-an-hero,.alveo-an-band,.alveo-an-lime,.alveo-an-good{border-radius:8px;padding:clamp(48px,7vw,96px) 0}
+.alveo-an-hero{background:var(--paper)}
+.alveo-an-band{background:var(--ink);color:var(--paper)}
+.alveo-an-lime{background:var(--lime)}
+.alveo-an-good{background:var(--soft);padding:clamp(36px,5vw,56px) 0}
+
+.alveo-an .alveo-an-kicker{font:11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.alveo-an-band .alveo-an-kicker{color:#9f9f98}
+.alveo-an-lime .alveo-an-kicker{color:#4f5628}
+.alveo-an .alveo-an-display{font-family:Manrope,system-ui,sans-serif;font-size:clamp(46px,8vw,104px);line-height:.92;letter-spacing:-.075em;font-weight:700;color:var(--ink);margin:0}
+.alveo-an .alveo-an-display em{font-style:normal;color:#9b9b92}
+.alveo-an .alveo-an-h{font-family:Manrope,system-ui,sans-serif;font-size:clamp(34px,5vw,62px);line-height:.98;letter-spacing:-.065em;font-weight:700;color:inherit;margin:0 0 34px}
+.alveo-an .alveo-an-lead{font-size:17px;line-height:1.65;color:#51514c;max-width:560px;margin:30px 0 38px}
+
+/* Formulario */
+.alveo-an-form{max-width:780px}
+.alveo-an .alveo-an-label{display:block;font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.alveo-an-row{display:flex;gap:12px;align-items:center}
+.alveo-an .alveo-an-input{flex:1;min-width:0;width:auto;height:auto;margin:0;border:0;border-bottom:1px solid var(--ink);border-radius:0;background:transparent;box-shadow:none;padding:14px 0;font:600 20px/1.3 Manrope,system-ui,sans-serif;letter-spacing:-.02em;color:var(--ink);outline:none}
+.alveo-an .alveo-an-input:focus{box-shadow:0 2px 0 var(--ink);border-color:var(--ink)}
+.alveo-an .alveo-an-input::placeholder{color:#b3b3ab;opacity:1}
+.alveo-an .alveo-an-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;margin:0;padding:14px 22px;border:1px solid var(--ink);border-radius:999px;font:700 13px/1.2 Manrope,system-ui,sans-serif;letter-spacing:0;text-transform:none;text-decoration:none;cursor:pointer;transition:transform .25s,background .25s,color .25s;box-shadow:none;white-space:nowrap}
+.alveo-an .alveo-an-btn:hover{transform:translateY(-2px)}
+.alveo-an .alveo-an-btn-dark{background:var(--ink);color:var(--paper)}
+.alveo-an .alveo-an-btn-dark:hover,.alveo-an .alveo-an-btn-dark:focus{background:#3d3d3a;color:var(--paper)}
+.alveo-an .alveo-an-btn-lime{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.alveo-an .alveo-an-btn-lime:hover,.alveo-an .alveo-an-btn-lime:focus{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+.alveo-an .alveo-an-btn[disabled]{opacity:.55;cursor:wait;transform:none}
+.alveo-an .alveo-an-error{margin-top:16px;padding:14px 16px;border:1px solid var(--ink);border-radius:6px;background:var(--soft);font-size:14px;line-height:1.5}
+.alveo-an .alveo-an-trust{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:24px;font:11px var(--mono);color:var(--muted)}
+.alveo-an .alveo-an-trust li{display:flex;align-items:center;gap:7px}
+.alveo-an .alveo-an-trust li::before{content:"✓";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--lime);color:var(--ink);font-size:9px}
+
+/* Cargando */
+.alveo-an-loading{display:flex;gap:18px;align-items:center;margin-top:40px}
+.alveo-an-spinner{width:36px;height:36px;flex-shrink:0;border-radius:50%;border:2px solid var(--line);border-top-color:var(--ink);animation:alveo-an-spin .9s linear infinite}
+@keyframes alveo-an-spin{to{transform:rotate(360deg)}}
+.alveo-an .alveo-an-loading-title{font-weight:700;font-size:16px}
+.alveo-an .alveo-an-loading-copy{color:var(--muted);font-size:14px}
+
+/* Resultados */
+.alveo-an-results{display:grid;gap:12px}
+.alveo-an .alveo-an-site{font-size:clamp(30px,5vw,56px);line-height:1.02;letter-spacing:-.06em;font-weight:700;word-break:break-all;margin-bottom:12px}
+.alveo-an .alveo-an-meta{font:11px/1.7 var(--mono);color:#9f9f98}
+.alveo-an .alveo-an-notice{margin-top:24px;border:1px solid #44443f;border-left:3px solid var(--lime);padding:14px 16px;font-size:14px;line-height:1.55;color:#d9d9d2;max-width:760px}
+
+.alveo-an .alveo-an-list{border-top:1px solid #aabd52;counter-reset:alveo-an}
+.alveo-an .alveo-an-list li{display:grid;grid-template-columns:64px 1fr 1.15fr;gap:24px;align-items:start;border-bottom:1px solid #aabd52;padding:28px 0;counter-increment:alveo-an}
+.alveo-an .alveo-an-list li::before{content:"0" counter(alveo-an);font:11px var(--mono);padding-top:8px}
+.alveo-an .alveo-an-list h4{font:700 clamp(21px,2.4vw,28px)/1.1 Manrope,system-ui,sans-serif;letter-spacing:-.045em;margin:0;color:var(--ink);text-transform:none}
+.alveo-an .alveo-an-area{display:inline-block;margin-top:12px;font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:#4f5628;border:1px solid #9fb34a;border-radius:999px;padding:3px 9px}
+.alveo-an .alveo-an-list p{font-size:15px;line-height:1.6;color:#2f3318}
+.alveo-an .alveo-an-evidence{display:block;margin-top:12px;font:12px/1.55 var(--mono);color:#4f5628}
+.alveo-an .alveo-an-evidence::before{content:"Lo que hemos visto: ";font-weight:500}
+.alveo-an .alveo-an-none{font-size:17px;line-height:1.6;max-width:640px;color:#2f3318}
+
+.alveo-an .alveo-an-chips{display:flex;flex-wrap:wrap;gap:10px}
+.alveo-an .alveo-an-chips li{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 14px 8px 8px;font-size:13px;font-weight:600}
+.alveo-an .alveo-an-chips li::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lime);font-size:10px;font-weight:800}
+
+.alveo-an-cta-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:end}
+.alveo-an-cta p{color:#bcbcb4;line-height:1.6;max-width:520px;font-size:15px}
+.alveo-an-cta .alveo-an-h{margin-bottom:20px}
+.alveo-an-cta-actions{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.alveo-an .alveo-an-again{background:none;border:0;border-bottom:1px solid #6c6c67;border-radius:0;padding:0 0 4px;margin:0;color:#bcbcb4;font:11px var(--mono);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;box-shadow:none}
+.alveo-an .alveo-an-again:hover{color:var(--paper)}
+
+.alveo-an-admin{border:2px dashed #b35c00;background:#fff7ec;padding:14px 18px;border-radius:8px;font-size:14px;color:#5a2e00}
+.alveo-an-admin ul{list-style:disc!important;padding-left:20px!important;margin-top:6px!important}
+.alveo-an-admin li::marker{content:initial}
+
+@media (max-width:760px){
+  .alveo-an .alveo-an-lead{font-size:15px;margin:24px 0 30px}
+  .alveo-an-row{flex-direction:column;align-items:stretch}
+  .alveo-an .alveo-an-input{font-size:18px}
+  .alveo-an .alveo-an-btn{width:100%;white-space:normal;text-align:center}
+  .alveo-an .alveo-an-list li{grid-template-columns:1fr;gap:10px;padding:24px 0}
+  .alveo-an .alveo-an-list li::before{padding-top:0}
+  .alveo-an-cta-grid{grid-template-columns:1fr;gap:30px}
+  .alveo-an-cta-actions{align-items:stretch}
+  .alveo-an .alveo-an-again{align-self:center}
+}
+@media (prefers-reduced-motion:reduce){.alveo-an .alveo-an-btn{transition:none}.alveo-an-spinner{animation-duration:3s}}
