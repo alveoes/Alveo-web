@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analizador Web de ALVEO — Descubre cómo mejorar tu web gratis</title>
+  <meta name="description" content="Introduce la dirección de tu web y descubre gratis cómo mejorar su adaptación a móviles, velocidad, SEO, contenido y contacto. Herramienta de ALVEO, agencia de marketing local en Granada.">
+  <meta property="og:title" content="Analizador Web de ALVEO">
+  <meta property="og:description" content="Descubre gratis las 3 mejoras más importantes para tu web.">
+  <link rel="icon" href="alveo-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<!--
+  data-api-base: dónde está la API ("" = mismo dominio).
+  data-contact-url: destino del botón de auditoría gratuita.
+-->
+<body data-api-base="" data-contact-url="https://alveoagencia.es/#contacto">
+<main class="alveo-page">
+  <header class="alveo-shell">
+    <nav class="alveo-nav" aria-label="Navegación principal">
+      <a class="alveo-logo" href="https://alveoagencia.es/" aria-label="ALVEO inicio"><img class="alveo-logo-image" src="alveo-logo.png" alt="" width="500" height="303"></a>
+      <a class="alveo-btn alveo-nav-cta js-contact" href="https://alveoagencia.es/#contacto">Hablar con ALVEO <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <section class="alveo-shell an-hero">
+    <div class="alveo-kicker">ALVEO / Herramienta gratuita</div>
+    <h1 class="alveo-display">Analiza tu web <em>gratis.</em></h1>
+    <p class="an-lead">Escribe la dirección de tu página y te diremos cómo se ve en el móvil, si carga rápido, cómo la entiende Google y si es fácil contactar contigo. Con las 3 mejoras más importantes, explicadas sin tecnicismos.</p>
+
+    <form class="an-form" id="an-form" novalidate>
+      <label class="an-label" for="an-url">Dirección de tu web</label>
+      <div class="an-input-row">
+        <input id="an-url" name="url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="www.tunegocio.es" required maxlength="2048">
+        <button class="alveo-btn alveo-btn-dark" type="submit" id="an-submit">Analizar mi web gratis <span aria-hidden="true">↗</span></button>
+      </div>
+      <p class="an-error" id="an-error" role="alert" hidden></p>
+    </form>
+    <ul class="an-trust">
+      <li>Sin registro</li><li>Sin contraseñas ni accesos</li><li>Solo datos públicos de tu web</li>
+    </ul>
+  </section>
+
+  <section class="an-loading alveo-shell" id="an-loading" hidden aria-live="polite">
+    <div class="an-spinner" aria-hidden="true"></div>
+    <div>
+      <p class="an-loading-title">Analizando <span id="an-loading-url"></span>…</p>
+      <p class="an-loading-copy" id="an-loading-copy">Descargamos tu página tal como la ve un visitante y revisamos su código. Suele tardar unos segundos.</p>
+    </div>
+  </section>
+
+  <div id="an-results" hidden></div>
+
+  <footer class="alveo-footer">
+    <div class="alveo-shell">
+      <div class="alveo-footer-top">
+        <a class="alveo-logo" href="https://alveoagencia.es/" aria-label="ALVEO inicio"><img class="alveo-logo-image" src="alveo-logo.png" alt="" width="500" height="303"></a>
+        <p class="an-footnote">Analizamos solo la página que indicas y lo que cualquier visitante puede ver. No guardamos la dirección que analizas.</p>
+      </div>
+      <div class="alveo-footer-bottom"><span>Marketing digital para negocios locales en Granada.</span><span>© <span id="an-year">2026</span> ALVEO. Todos los derechos reservados.</span></div>
+    </div>
+  </footer>
+</main>
+
+<template id="tpl-results">
+  <section class="alveo-band an-summary">
+    <div class="alveo-shell">
+      <div class="alveo-kicker">Diagnóstico de</div>
+      <h2 class="an-site" data-slot="site"></h2>
+      <p class="an-meta" data-slot="meta"></p>
+      <div class="an-warning" data-slot="warnings" hidden></div>
+      <div class="an-overview" data-slot="overview"></div>
+    </div>
+  </section>
+
+  <section class="alveo-about an-top">
+    <div class="alveo-shell">
+      <div class="alveo-kicker">Por dónde empezar</div>
+      <h2 data-slot="top-title">Las 3 mejoras más importantes</h2>
+      <ol class="an-improvements" data-slot="improvements"></ol>
+    </div>
+  </section>
+
+  <section class="alveo-shell alveo-section an-detail">
+    <div class="alveo-section-head"><div><div class="alveo-kicker">El detalle</div><h2>Qué hemos <em>comprobado.</em></h2></div><p class="alveo-section-intro">Cada punto muestra lo que hemos encontrado en tu web. Si algo no se ha podido comprobar, te lo indicamos.</p></div>
+    <div class="an-cats" data-slot="categories"></div>
+  </section>
+
+  <section class="alveo-band an-cta">
+    <div class="alveo-shell an-cta-grid">
+      <div>
+        <div class="alveo-kicker">Siguiente paso</div>
+        <h2>¿Quieres que lo revisemos contigo?</h2>
+        <p>Este análisis es automático. En la auditoría gratuita, el equipo de ALVEO revisa tu web, tu ficha de Google y tus redes, y te propone un plan concreto para conseguir más clientes.</p>
+      </div>
+      <div class="an-cta-actions">
+        <a class="alveo-btn alveo-btn-lime js-contact" href="https://alveoagencia.es/#contacto">Solicitar auditoría gratuita con ALVEO <span aria-hidden="true">↗</span></a>
+        <button class="an-again" type="button" data-slot="again">Analizar otra web</button>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script src="app.js" defer></script>
+</body>
+</html>

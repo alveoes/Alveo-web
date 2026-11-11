@@ -30,7 +30,7 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Analizador Web de ALVEO: página pública en `/analizador/` y API `POST /api/analyze`. Documentación en `artifacts/api-server/ANALIZADOR.md`.
 
 ## User preferences
 
