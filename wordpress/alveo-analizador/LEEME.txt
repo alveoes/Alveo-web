@@ -41,6 +41,22 @@ Seguridad
 - Máximo 12 segundos y 3 MB por análisis.
 - Todo lo que viene de webs externas se muestra como texto (sin riesgo de XSS).
 
+Cómo responde (versión 1.0.1)
+-----------------------------
+- Con JavaScript, analiza sin recargar la página (a través de admin-ajax.php).
+- Si JavaScript no se ejecuta (optimizadores, errores de otros plugins,
+  navegador antiguo), el formulario se envía al servidor y la página se recarga
+  con los resultados. El visitante siempre recibe una respuesta o un mensaje.
+- Los administradores ven un recuadro de comprobaciones encima del analizador
+  (JavaScript, extensiones de PHP, conexión del servidor y número de WhatsApp).
+  Los visitantes no lo ven.
+
+Actualizar desde una versión anterior
+-------------------------------------
+Plugins → Añadir nuevo → Subir plugin → elige el nuevo .zip → «Reemplazar el
+actual por el subido». Después, si usas LiteSpeed Cache: LiteSpeed Cache →
+Panel → «Vaciar todo».
+
 Requisitos
 ----------
 WordPress 6.0+, PHP 7.4+ con las extensiones cURL y DOM (vienen activadas en

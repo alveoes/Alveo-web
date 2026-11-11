@@ -1,17 +1,18 @@
-/* Analizador Web de ALVEO. Todo lo que llega de webs externas se pinta con
-   textContent (nunca como HTML) para evitar inyección de código. */
+/* Analizador Web de ALVEO.
+   Si este script no llega a ejecutarse, el formulario se envía al servidor y
+   PHP muestra los resultados igualmente. Si se ejecuta, analiza sin recargar
+   la página mediante admin-ajax.php. Ante cualquier fallo inesperado vuelve al
+   envío normal del formulario: el usuario nunca se queda sin respuesta. */
 (function () {
   "use strict";
 
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
+  var TIMEOUT_MS = 45000;
 
   function init(root) {
-    var endpoint = root.getAttribute("data-endpoint");
+    if (root.getAttribute("data-alveo-ready")) return;
+    root.setAttribute("data-alveo-ready", "1");
+
+    var ajaxUrl = root.getAttribute("data-ajax");
     var phone = root.getAttribute("data-whatsapp") || "";
     var form = root.querySelector(".alveo-an-form");
     var input = root.querySelector(".alveo-an-input");
@@ -19,132 +20,118 @@
     var errorBox = root.querySelector(".alveo-an-error");
     var loading = root.querySelector(".alveo-an-loading");
     var results = root.querySelector(".alveo-an-results");
-    var slot = function (name) { return root.querySelector('[data-slot="' + name + '"]'); };
+    var jsCheck = root.querySelector(".alveo-an-jscheck");
+    var busyNow = false;
+
+    if (jsCheck) {
+      jsCheck.textContent = "JavaScript del analizador: funcionando correctamente.";
+    }
 
     function showError(msg) {
       errorBox.textContent = msg;
       errorBox.hidden = false;
     }
 
-    function busy(on) {
+    function setBusy(on) {
+      busyNow = on;
       button.disabled = on;
       input.readOnly = on;
       loading.hidden = !on;
     }
 
-    form.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      errorBox.hidden = true;
-      var url = input.value.trim();
-      if (!url) {
-        showError("Escribe la dirección de tu web, por ejemplo: www.tunegocio.es");
-        input.focus();
-        return;
-      }
-      if (/\s/.test(url) || url.indexOf(".") === -1) {
-        showError("Esa dirección no parece válida. Escríbela así: www.tunegocio.es");
-        input.focus();
-        return;
-      }
-      results.hidden = true;
-      busy(true);
-
-      var ctrl = "AbortController" in window ? new AbortController() : null;
-      var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 45000);
-      fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "omit",
-        body: JSON.stringify({ url: url }),
-        signal: ctrl ? ctrl.signal : undefined
-      })
-        .then(function (r) {
-          return r.json().catch(function () { return null; }).then(function (data) {
-            if (!r.ok || !data || !data.improvements) {
-              showError((data && data.message) || "No hemos podido analizar la web. Inténtalo de nuevo en unos minutos.");
-              return;
-            }
-            render(data);
-          });
-        })
-        .catch(function (e) {
-          showError(e && e.name === "AbortError"
-            ? "El análisis ha tardado demasiado. Inténtalo de nuevo en unos minutos."
-            : "No hemos podido conectar con el analizador. Revisa tu conexión e inténtalo de nuevo.");
-        })
-        .then(function () {
-          clearTimeout(timer);
-          busy(false);
-        });
-    });
-
-    function render(data) {
-      slot("site").textContent = data.site;
-      var when = new Date().toLocaleString("es-ES", { dateStyle: "long", timeStyle: "short" });
-      slot("meta").textContent = "Analizada el " + when + " · " + data.checked + " comprobaciones sobre el código de la página";
-
-      var notices = slot("notices");
-      notices.replaceChildren();
-      notices.hidden = !data.notices.length;
-      data.notices.forEach(function (t) { notices.append(el("p", null, t)); });
-
-      var list = slot("improvements");
-      list.replaceChildren();
-      var n = data.improvements.length;
-      slot("title").textContent = n === 3 ? "Las 3 mejoras más importantes"
-        : n === 2 ? "Las 2 mejoras más importantes"
-        : n === 1 ? "La mejora más importante"
-        : "No hemos detectado mejoras urgentes";
-      data.improvements.forEach(function (imp) {
-        var li = el("li");
-        var head = el("div");
-        head.append(el("h4", null, imp.title), el("span", "alveo-an-area", imp.area));
-        var body = el("div");
-        body.append(el("p", null, imp.text), el("span", "alveo-an-evidence", imp.evidence));
-        li.append(head, body);
-        list.append(li);
-      });
-      list.hidden = n === 0;
-      var none = slot("none");
-      none.hidden = n === 3;
-      none.textContent = n === 0
-        ? "En lo que hemos podido comprobar automáticamente tu web está bien preparada. Aun así, en una revisión personalizada podemos encontrar oportunidades en tu ficha de Google, tus redes y tus mensajes."
-        : "Solo te mostramos los problemas que hemos detectado de verdad en tu página.";
-      if (n > 0 && n < 3) none.style.marginTop = "26px";
-
-      var chips = slot("strengths");
-      chips.replaceChildren();
-      data.strengths.slice(0, 10).forEach(function (s) {
-        var li = el("li", null, s.label);
-        li.title = s.evidence;
-        chips.append(li);
-      });
-      slot("strengths-wrap").hidden = !data.strengths.length;
-
-      var wa = slot("whatsapp");
-      if (phone.length >= 9) {
-        var msg = "Hola ALVEO, he analizado mi web (" + data.url + ") con vuestro analizador y me gustaría que la revisarais conmigo.";
-        wa.href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
-        wa.hidden = false;
-      } else {
-        wa.hidden = true;
-      }
-
-      results.hidden = false;
-      results.scrollIntoView({ behavior: "smooth", block: "start" });
+    /** Plan B: envío normal del formulario al servidor (PHP analiza y responde). */
+    function serverFallback() {
+      setBusy(false);
+      loading.hidden = false; // La página se recargará con los resultados.
+      button.disabled = true;
+      HTMLFormElement.prototype.submit.call(form);
     }
 
-    slot("again").addEventListener("click", function () {
+    function analyze(url) {
+      var body = new FormData();
+      body.append("action", "alveo_analizar");
+      body.append("url", url);
+      body.append("wa", phone);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", ajaxUrl, true);
+      xhr.timeout = TIMEOUT_MS;
+      xhr.onload = function () {
+        var data = null;
+        try { data = JSON.parse(xhr.responseText); } catch (e) { data = null; }
+        if (!data || typeof data.success !== "boolean") {
+          // El servidor no ha respondido como esperábamos (caché, seguridad, etc.).
+          serverFallback();
+          return;
+        }
+        setBusy(false);
+        if (!data.success) {
+          showError((data.data && data.data.message) || "No hemos podido analizar la web. Inténtalo de nuevo en unos minutos.");
+          return;
+        }
+        results.innerHTML = data.data.html; // HTML generado y escapado por el servidor.
+        results.hidden = false;
+        results.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      xhr.onerror = function () {
+        setBusy(false);
+        showError("No hemos podido conectar con el analizador. Revisa tu conexión a internet e inténtalo de nuevo.");
+      };
+      xhr.ontimeout = function () {
+        setBusy(false);
+        showError("El análisis ha tardado demasiado. La web puede ser muy lenta o no responder. Inténtalo de nuevo en unos minutos.");
+      };
+      xhr.send(body);
+    }
+
+    form.addEventListener("submit", function (ev) {
+      if (busyNow) { ev.preventDefault(); return; }
+      try {
+        errorBox.hidden = true;
+        var url = input.value.trim();
+        if (!url) {
+          ev.preventDefault();
+          showError("Escribe la dirección de tu web, por ejemplo: www.tunegocio.es");
+          input.focus();
+          return;
+        }
+        if (/\s/.test(url) || url.indexOf(".") === -1) {
+          ev.preventDefault();
+          showError("Esa dirección no parece válida. Escríbela así: www.tunegocio.es");
+          input.focus();
+          return;
+        }
+        if (!ajaxUrl || !window.FormData || !window.XMLHttpRequest) return; // Envío normal.
+        ev.preventDefault();
+        results.hidden = true;
+        setBusy(true);
+        analyze(url);
+      } catch (e) {
+        // Cualquier error inesperado: dejamos que el servidor responda.
+        if (!ev.defaultPrevented) return;
+        serverFallback();
+      }
+    });
+
+    // «Analizar otra web» (los resultados pueden venir del servidor o de JavaScript).
+    root.addEventListener("click", function (ev) {
+      var t = ev.target;
+      while (t && t !== root && !(t.hasAttribute && t.hasAttribute("data-again"))) t = t.parentNode;
+      if (!t || t === root) return;
+      ev.preventDefault();
       results.hidden = true;
+      errorBox.hidden = true;
       input.value = "";
       root.scrollIntoView({ behavior: "smooth", block: "start" });
-      input.focus({ preventScroll: true });
+      try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
     });
   }
 
   function boot() {
     var roots = document.querySelectorAll(".alveo-an");
-    for (var i = 0; i < roots.length; i++) init(roots[i]);
+    for (var i = 0; i < roots.length; i++) {
+      try { init(roots[i]); } catch (e) { /* El formulario sigue funcionando sin JavaScript. */ }
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
